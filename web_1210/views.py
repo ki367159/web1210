@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-
+from django.shortcuts import render
 
 def root(request):
     name = request.GET.get('name', 'guest')
@@ -12,5 +12,12 @@ def s(request, number):
     return HttpResponse(number ** 2)
 
 def l(request, number1, number2):
-    result = ['<li>{}</li>'.format(i) for i in range(number1, number2+1)]
-    return HttpResponse('<ul>{}</ul>'.format(''.join(result))) 
+    # if number1 > number2:           #方法一
+    #     _list = reversed(range(number2, number1+1))
+    # else:
+    #     _list = range(number1, number2+1)
+
+    step = -1 if number1 > number2 else 1  #方法二
+    _list = range(number1, number2+step, step)
+
+    return render(request, 'l.html', {'list': _list})
